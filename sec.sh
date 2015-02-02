@@ -25,7 +25,7 @@ echo "	 ___ ___  ___
 	/ __/ __|/ __| [Simple Security Checker]
 	\__ \__ \ (__ 
 	|___/___/\___|
-	by: Francisco J. Valero - francisco.valero@masvoz.es
+	by: Francisco J. Valero - hackgo@gmail.com
 "
 
 }
