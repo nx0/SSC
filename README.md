@@ -1,0 +1,2 @@
+# SSC
+Simple Security Checker
