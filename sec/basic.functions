@@ -1,0 +1,84 @@
+function ssh_fix {
+	sed 's/UseDNS no/UseDNS yes/g' -i /etc/ssh/sshd_config
+	case $?	in
+		0)
+			return 0	
+			;;
+		1)
+			return 1
+			;;
+		*)
+			echo "nope"
+	esac
+}
+
+function sysctl_fix {
+	echo "sysctl -w $1=${2}"
+	case $? in
+		0)
+			return 0
+			;;
+		1)
+			return 1
+			;;
+		*)
+			echo "nope"
+	esac
+}
+
+
+function reactive {
+        $1 $2 $3
+        case $? in
+                0)
+			echo "${GREEN}FIXED!!${ENDCOLOR}"	
+                	;;
+		1)
+			echo "no fix"
+			;;
+		*)
+			echo "nope"
+        esac
+}
+
+
+
+function stats {
+######## STATS ########
+	if [ "`which bc`" != "" ]; then
+		echo ""
+		BAR=$(echo "scale=1;($SOK / $TOTAL)*100" |bc)
+		PINTAR=$(echo "$BAR / 10" | bc)
+		#PINTAR=10
+		TOTALE=$(echo "10 - $PINTAR"|bc)
+
+		if [ $PINTAR -le 3 ]; then
+			GRADE=$BGR
+			GRADEFONT=$RED
+		elif [ $PINTAR -le 6 ]; then
+			GRADE=$BGY
+			GRADEFONT=$YELLOW
+		elif [ $PINTAR -le 9 ]; then
+			GRADE=$BGG
+			GRADEFONT=$GREEN
+	else
+		GRADE=$BGG
+		GRADEFONT=$GREEN
+	fi
+
+	echo -n "${NEG}STATS${ENDCOLOR} [Total checks: $TOTAL ,Error: $SERROR, Ok: $SOK] | ${BGN}HARDENING LEVEL: ${NEG}${GRADEFONT}$BAR % $ENDCOLOR"
+	echo -n "|"
+	for ((c=1; c<=$PINTAR; c++)); do
+		echo -n "$GRADE $ENDCOLOR"
+	done
+
+	for ((r=1; r<=$TOTALE; r++)); do
+		echo -n "$BGN $ENDCOLOR"
+	done
+
+	echo "|"
+	else
+		echo "No se generaron estadísticas porque el paquete bc no está instalado"
+	fi
+######## STATS ########
+}

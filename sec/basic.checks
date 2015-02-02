@@ -1,0 +1,6 @@
+# info: set de reglas muy básico
+header "firewall"
+wrap cmd_iptables_badflags
+wrap cmd_iptables_burst
+wrap cmd_iptables_sec
+

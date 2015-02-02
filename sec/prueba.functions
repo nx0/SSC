@@ -1,0 +1,13 @@
+function ssh_dns {
+        header_check "comprobando ssh dns"
+        CMD=`grep UseDNS /etc/ssh/sshd_config|awk '{ print $NF }'`
+        if [ "$CMD" == "yes" ]; then
+                LONGEXP="usar dns para resolución inversa"
+                EXPLANATION="ssh dns a yes"
+                return 0
+        else
+                EXPLANATION="no usar dns para resolución inversa"
+		reactfix="ssh_fix"
+                return 1
+        fi
+}
